@@ -39,19 +39,43 @@ function leadPayload(lead: LeadInput) {
   };
 }
 
+async function postAppsScript(url: string, payload: unknown) {
+  const body = JSON.stringify(payload);
+  const headers = { "Content-Type": "text/plain;charset=utf-8" };
+
+  let res = await fetch(url, {
+    method: "POST",
+    headers,
+    body,
+    redirect: "manual",
+  });
+
+  const location = res.headers.get("location");
+  if (location && res.status >= 300 && res.status < 400) {
+    res = await fetch(location, {
+      method: "POST",
+      headers,
+      body,
+      redirect: "follow",
+    });
+  }
+
+  const text = await res.text();
+  if (!res.ok) {
+    throw new Error(`Sheet webhook ${res.status}: ${text.slice(0, 200)}`);
+  }
+
+  if (text.includes("Leads webhook OK") && !text.includes('"ok"')) {
+    throw new Error("Sheet webhook redirected as GET; row was not written.");
+  }
+
+  return text;
+}
+
 export async function appendLeadToSheet(lead: LeadInput) {
   const webhook = process.env.GOOGLE_SHEETS_WEBAPP_URL?.trim();
   if (webhook) {
-    const res = await fetch(webhook, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      redirect: "follow",
-      body: JSON.stringify(leadPayload(lead)),
-    });
-    const text = await res.text();
-    if (!res.ok) {
-      throw new Error(`Sheet webhook ${res.status}: ${text.slice(0, 200)}`);
-    }
+    await postAppsScript(webhook, leadPayload(lead));
     return { skipped: false as const };
   }
 
@@ -60,7 +84,7 @@ export async function appendLeadToSheet(lead: LeadInput) {
   const sheetId = process.env.GOOGLE_SHEET_ID;
   if (!email || !key || !sheetId || key.includes("...")) {
     console.warn(
-      "Google Sheet skipped: set GOOGLE_SHEETS_WEBAPP_URL, or GOOGLE_SHEET_ID + service account.",
+      "Google Sheet skipped: set GOOGLE_SHEETS_WEBAPP_URL on Vercel, or GOOGLE_SHEET_ID + service account.",
     );
     return { skipped: true as const };
   }

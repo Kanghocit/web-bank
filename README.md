@@ -27,7 +27,7 @@ If Sheet/email are not configured, the form still succeeds and the lead is logge
 
 ## Contact placeholders
 
-Edit `src/lib/site.ts`: `phoneDisplay`, `phoneTel`, `email`, `address`, `zaloUrl`, `NEXT_PUBLIC_SITE_URL`.
+Edit `src/lib/site.ts`: `phoneDisplay`, `phoneTel`, `email`, `address`, `zaloUrl`, `SITE_URL`.
 
 ## Build
 

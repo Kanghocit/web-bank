@@ -34,27 +34,37 @@ export async function POST(request: Request) {
   }
 
   const lead = parsed.data;
+  const saved = { file: false, sheet: false, email: false };
 
   try {
-    await saveLeadToFile(lead);
+    const file = await saveLeadToFile(lead);
+    saved.file = !file.skipped;
   } catch (error) {
     console.error("File lead error", error);
-    return NextResponse.json(
-      { ok: false, error: "Không lưu được đăng ký. Vui lòng gọi điện trực tiếp." },
-      { status: 500 },
-    );
   }
 
   try {
-    await withTimeout(appendLeadToSheet(lead), 8000);
+    const sheet = await withTimeout(appendLeadToSheet(lead), 8000);
+    saved.sheet = !sheet.skipped;
   } catch (error) {
     console.error("Google Sheet error", error);
   }
 
   try {
-    await withTimeout(sendLeadEmail(lead), 3000);
+    const email = await withTimeout(sendLeadEmail(lead), 3000);
+    saved.email = !email.skipped;
   } catch (error) {
     console.error("Email error", error);
+  }
+
+  if (!saved.sheet && !saved.email && !saved.file) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "Chưa cấu hình Google Sheet trên server. Vui lòng gọi điện trực tiếp.",
+      },
+      { status: 503 },
+    );
   }
 
   return NextResponse.json({ ok: true });
