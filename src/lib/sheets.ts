@@ -1,6 +1,7 @@
 import { google } from "googleapis";
 import type { LeadInput } from "@/lib/lead-schema";
-import { incomeLabels, productLabels } from "@/lib/lead-schema";
+import { labelIncome, labelProduct } from "@/lib/lead-schema";
+import { formatMoneyInput, formatVietnamDateTime } from "@/lib/format";
 
 const HEADERS = [
   "Thời gian",
@@ -15,27 +16,27 @@ const HEADERS = [
 
 function leadRow(lead: LeadInput) {
   return [
-    new Date().toISOString(),
+    formatVietnamDateTime(),
     lead.fullName,
-    lead.email,
+    lead.email || "",
     lead.phone,
-    lead.nationality,
-    productLabels[lead.product],
-    lead.loanAmount || "",
-    incomeLabels[lead.incomeType],
+    lead.nationality || "",
+    labelProduct(lead.product),
+    formatMoneyInput(lead.loanAmount),
+    labelIncome(lead.incomeType),
   ];
 }
 
 function leadPayload(lead: LeadInput) {
   return {
-    at: new Date().toISOString(),
+    at: formatVietnamDateTime(),
     fullName: lead.fullName,
-    email: lead.email,
+    email: lead.email || "",
     phone: lead.phone,
-    nationality: lead.nationality,
-    product: productLabels[lead.product],
-    loanAmount: lead.loanAmount || "",
-    incomeType: incomeLabels[lead.incomeType],
+    nationality: lead.nationality || "",
+    product: labelProduct(lead.product),
+    loanAmount: formatMoneyInput(lead.loanAmount),
+    incomeType: labelIncome(lead.incomeType),
   };
 }
 
@@ -43,6 +44,8 @@ async function postAppsScript(url: string, payload: unknown) {
   const body = JSON.stringify(payload);
   const headers = { "Content-Type": "text/plain;charset=utf-8" };
 
+  // POST to /exec already runs doPost. Google then 302s to an echo URL
+  // that only accepts GET — posting again returns 405.
   let res = await fetch(url, {
     method: "POST",
     headers,
@@ -52,21 +55,34 @@ async function postAppsScript(url: string, payload: unknown) {
 
   const location = res.headers.get("location");
   if (location && res.status >= 300 && res.status < 400) {
-    res = await fetch(location, {
-      method: "POST",
-      headers,
-      body,
-      redirect: "follow",
-    });
+    res = await fetch(location, { method: "GET", redirect: "follow" });
   }
 
   const text = await res.text();
+  if (res.status === 401 || res.status === 403 || text.includes("accounts.google.com")) {
+    throw new Error(
+      "Apps Script chưa mở quyền công khai. Deploy → Web app → Chạy với tư cách: Tôi → Ai có quyền: Tất cả mọi người (Anyone). Rồi dán URL /exec mới vào .env.",
+    );
+  }
   if (!res.ok) {
     throw new Error(`Sheet webhook ${res.status}: ${text.slice(0, 200)}`);
   }
 
   if (text.includes("Leads webhook OK") && !text.includes('"ok"')) {
     throw new Error("Sheet webhook redirected as GET; row was not written.");
+  }
+
+  try {
+    const json = JSON.parse(text) as { ok?: boolean; error?: string };
+    if (json.ok === false) {
+      throw new Error(json.error || "Apps Script returned ok:false");
+    }
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      // Plain-text success from older deployments is fine.
+    } else {
+      throw error;
+    }
   }
 
   return text;

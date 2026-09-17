@@ -1,17 +1,18 @@
 import nodemailer from "nodemailer";
 import type { LeadInput } from "@/lib/lead-schema";
-import { incomeLabels, productLabels } from "@/lib/lead-schema";
+import { labelIncome, labelProduct } from "@/lib/lead-schema";
 import { site } from "@/lib/site";
+import { formatMoneyInput } from "@/lib/format";
 
 function formatLead(lead: LeadInput) {
   return [
     `Họ tên: ${lead.fullName}`,
-    `Email: ${lead.email}`,
+    `Email: ${lead.email || "—"}`,
     `Điện thoại: ${lead.phone}`,
-    `Quốc tịch: ${lead.nationality}`,
-    `Nhu cầu: ${productLabels[lead.product]}`,
-    `Số tiền vay: ${lead.loanAmount || "—"}`,
-    `Thu nhập: ${incomeLabels[lead.incomeType]}`,
+    `Quốc tịch: ${lead.nationality || "—"}`,
+    `Nhu cầu: ${labelProduct(lead.product) || "—"}`,
+    `Số tiền vay: ${formatMoneyInput(lead.loanAmount) || "—"}`,
+    `Thu nhập: ${labelIncome(lead.incomeType) || "—"}`,
   ].join("\n");
 }
 
@@ -21,7 +22,7 @@ export async function sendLeadEmail(lead: LeadInput) {
 
   const text = `Lead mới từ ${site.shortName}\n\n${formatLead(lead)}`;
   const html = `<h2>Lead mới từ ${site.shortName}</h2><pre>${formatLead(lead)}</pre>`;
-  const subject = `[Lead] ${productLabels[lead.product]} - ${lead.fullName}`;
+  const subject = `[Lead] ${labelProduct(lead.product) || "Đăng ký"} - ${lead.fullName}`;
 
   if (process.env.RESEND_API_KEY) {
     const res = await fetch("https://api.resend.com/emails", {

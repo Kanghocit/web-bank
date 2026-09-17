@@ -10,6 +10,7 @@ import {
   productValues,
   type ProductValue,
 } from "@/lib/lead-schema";
+import { formatMoneyInput } from "@/lib/format";
 
 type LeadFormProps = {
   defaultProduct?: ProductValue;
@@ -20,10 +21,11 @@ const fieldClass =
   "mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-base text-ink outline-none transition placeholder:text-slate-400 focus:border-teal focus:ring-2 focus:ring-teal/30";
 
 export function LeadForm({
-  defaultProduct = "vay-tin-chap",
+  defaultProduct,
   compactTitle = "ĐĂNG KÝ TƯ VẤN",
 }: LeadFormProps) {
-  const [product, setProduct] = useState<ProductValue>(defaultProduct);
+  const [product, setProduct] = useState<ProductValue | "">(defaultProduct ?? "");
+  const [loanAmount, setLoanAmount] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "ok" | "error">("idle");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -31,7 +33,7 @@ export function LeadForm({
   const showAmount = product !== "the-tin-dung";
 
   const amountHint = useMemo(
-    () => (showAmount ? "VD: 50 000 000" : "Không bắt buộc với mở thẻ"),
+    () => (showAmount ? "VD: 50,000,000" : "Không bắt buộc với mở thẻ"),
     [showAmount],
   );
 
@@ -44,9 +46,9 @@ export function LeadForm({
       fullName: String(formData.get("fullName") ?? ""),
       email: String(formData.get("email") ?? ""),
       phone: String(formData.get("phone") ?? ""),
-      nationality: String(formData.get("nationality") ?? "Việt Nam"),
+      nationality: String(formData.get("nationality") ?? ""),
       product: String(formData.get("product") ?? product),
-      loanAmount: String(formData.get("loanAmount") ?? ""),
+      loanAmount,
       incomeType: String(formData.get("incomeType") ?? ""),
       consent: formData.get("consent") === "on",
       website: String(formData.get("website") ?? ""),
@@ -115,7 +117,7 @@ export function LeadForm({
           </label>
         </div>
 
-        <Field label="Họ tên" error={errors.fullName}>
+        <Field label="Họ tên" error={errors.fullName} required>
           <input className={fieldClass} name="fullName" placeholder="Họ tên" autoComplete="name" required />
         </Field>
 
@@ -126,12 +128,11 @@ export function LeadForm({
             type="email"
             placeholder="abcde@gmail.com"
             autoComplete="email"
-            required
           />
         </Field>
 
         <div className="grid gap-3 sm:grid-cols-2">
-          <Field label="Số điện thoại" error={errors.phone}>
+          <Field label="Số điện thoại" error={errors.phone} required>
             <input
               className={fieldClass}
               name="phone"
@@ -143,7 +144,8 @@ export function LeadForm({
             />
           </Field>
           <Field label="Quốc tịch" error={errors.nationality}>
-            <select className={fieldClass} name="nationality" defaultValue="Việt Nam">
+            <select className={fieldClass} name="nationality" defaultValue="">
+              <option value="">Vui lòng chọn</option>
               <option>Việt Nam</option>
               <option>Khác</option>
             </select>
@@ -155,8 +157,13 @@ export function LeadForm({
             className={fieldClass}
             name="product"
             value={product}
-            onChange={(e) => setProduct(e.target.value as ProductValue)}
+            onChange={(e) => {
+              const next = e.target.value as ProductValue | "";
+              setProduct(next);
+              if (next === "the-tin-dung") setLoanAmount("");
+            }}
           >
+            <option value="">Vui lòng chọn</option>
             {productValues.map((value) => (
               <option key={value} value={value}>
                 {productLabels[value]}
@@ -174,6 +181,8 @@ export function LeadForm({
                 inputMode="numeric"
                 placeholder={amountHint}
                 disabled={!showAmount}
+                value={loanAmount}
+                onChange={(e) => setLoanAmount(formatMoneyInput(e.target.value))}
               />
               <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-muted">
                 VND
@@ -182,9 +191,7 @@ export function LeadForm({
           </Field>
           <Field label="Hình thức thu nhập" error={errors.incomeType}>
             <select className={fieldClass} name="incomeType" defaultValue="">
-              <option value="" disabled>
-                Vui lòng chọn
-              </option>
+              <option value="">Vui lòng chọn</option>
               {incomeValues.map((value) => (
                 <option key={value} value={value}>
                   {incomeLabels[value]}
@@ -195,12 +202,7 @@ export function LeadForm({
         </div>
 
         <label className="flex items-start gap-2 pt-1 text-sm text-muted">
-          <input
-            className="mt-1 h-4 w-4 rounded border-slate-300 text-brand"
-            name="consent"
-            type="checkbox"
-            required
-          />
+          <input className="mt-1 h-4 w-4 rounded border-slate-300 text-brand" name="consent" type="checkbox" />
           <span>
             Tôi đồng ý để chuyên viên liên hệ tư vấn và đã đọc{" "}
             <Link href="/chinh-sach-bao-mat" className="font-medium text-brand underline">
@@ -241,15 +243,18 @@ export function LeadForm({
 function Field({
   label,
   error,
+  required,
   children,
 }: {
   label: string;
   error?: string;
+  required?: boolean;
   children: ReactNode;
 }) {
   return (
     <label className="block text-sm font-medium text-ink">
       {label}
+      {required ? <span className="text-red-600"> *</span> : null}
       {children}
       {error ? <span className="mt-1 block text-xs font-normal text-red-600">{error}</span> : null}
     </label>

@@ -2,7 +2,7 @@ import { LeadForm } from "@/components/LeadForm";
 import { Steps } from "@/components/Steps";
 import type { ProductValue } from "@/lib/lead-schema";
 
-export function Hero({ defaultProduct = "vay-tin-chap" }: { defaultProduct?: ProductValue }) {
+export function Hero({ defaultProduct }: { defaultProduct?: ProductValue }) {
   return (
     <>
     <section className="relative overflow-x-clip hero-bg pt-24 sm:pt-28">
