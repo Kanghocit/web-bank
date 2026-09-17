@@ -64,7 +64,7 @@ export function Footer() {
           </a>
         </p>
         <p className="mt-3 text-center text-xs text-white/70">
-          © {new Date().getFullYear()} {site.shortName}. All rights reserved.
+          © 2026 {site.shortName}. All rights reserved.
         </p>
       </div>
     </footer>

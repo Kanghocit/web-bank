@@ -2,6 +2,16 @@ import { NextResponse } from "next/server";
 import { leadSchema } from "@/lib/lead-schema";
 import { appendLeadToSheet } from "@/lib/sheets";
 import { sendLeadEmail } from "@/lib/email";
+import { saveLeadToFile } from "@/lib/leads-file";
+
+async function withTimeout<T>(promise: Promise<T>, ms: number) {
+  return Promise.race([
+    promise,
+    new Promise<never>((_, reject) => {
+      setTimeout(() => reject(new Error("timeout")), ms);
+    }),
+  ]);
+}
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -24,46 +34,27 @@ export async function POST(request: Request) {
   }
 
   const lead = parsed.data;
-  let stored = false;
-  let notified = false;
-  let destinationConfigured = false;
 
   try {
-    const sheet = await appendLeadToSheet(lead);
-    if (!sheet.skipped) {
-      stored = true;
-      destinationConfigured = true;
-    }
+    await saveLeadToFile(lead);
   } catch (error) {
-    destinationConfigured = true;
+    console.error("File lead error", error);
+    return NextResponse.json(
+      { ok: false, error: "Không lưu được đăng ký. Vui lòng gọi điện trực tiếp." },
+      { status: 500 },
+    );
+  }
+
+  try {
+    await withTimeout(appendLeadToSheet(lead), 3000);
+  } catch (error) {
     console.error("Google Sheet error", error);
   }
 
   try {
-    const mail = await sendLeadEmail(lead);
-    if (!mail.skipped) {
-      notified = true;
-      destinationConfigured = true;
-    }
+    await withTimeout(sendLeadEmail(lead), 3000);
   } catch (error) {
-    destinationConfigured = true;
     console.error("Email error", error);
-  }
-
-  if (!destinationConfigured) {
-    console.info("Lead received (Sheet/email not configured)", {
-      name: lead.fullName,
-      phone: lead.phone,
-      product: lead.product,
-    });
-    return NextResponse.json({ ok: true });
-  }
-
-  if (!stored && !notified) {
-    return NextResponse.json(
-      { ok: false, error: "Không lưu được đăng ký. Vui lòng gọi điện trực tiếp." },
-      { status: 502 },
-    );
   }
 
   return NextResponse.json({ ok: true });

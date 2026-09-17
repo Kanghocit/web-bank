@@ -4,9 +4,10 @@ import type { ProductValue } from "@/lib/lead-schema";
 
 export function Hero({ defaultProduct = "vay-tin-chap" }: { defaultProduct?: ProductValue }) {
   return (
-    <section className="relative overflow-hidden hero-bg pb-8 pt-24 sm:pt-28 lg:pb-4 lg:pt-24">
+    <>
+    <section className="relative overflow-x-clip hero-bg pt-24 sm:pt-28">
       <LeafDecor />
-      <div className="relative mx-auto grid max-w-6xl items-center gap-8 px-4 pb-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:pb-24">
+      <div className="relative mx-auto grid max-w-6xl items-end gap-8 px-4 pb-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:pb-20">
         <div className="text-white">
           <h1 className="animate-fade-up text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">
             Vay tín chấp &amp;
@@ -23,8 +24,9 @@ export function Hero({ defaultProduct = "vay-tin-chap" }: { defaultProduct?: Pro
           <LeadForm defaultProduct={defaultProduct} />
         </div>
       </div>
-      <Steps />
     </section>
+    <Steps />
+    </>
   );
 }
 

@@ -10,8 +10,8 @@ export const site = {
   email: "phanthutrang0608@gmail.com",
   address: "Đang cập nhật, Việt Nam",
   zaloUrl: "https://zalo.me/0900000000",
-  // officialBankUrl: "https://www.vpbank.com.vn/",
-  // officialLoanUrl: "https://vayonline.vpbank.com.vn/",
+  officialBankUrl: "https://www.vpbank.com.vn/",
+  officialLoanUrl: "https://vayonline.vpbank.com.vn/",
 } as const;
 
 export const navItems = [
