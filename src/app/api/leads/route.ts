@@ -46,7 +46,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    await withTimeout(appendLeadToSheet(lead), 3000);
+    await withTimeout(appendLeadToSheet(lead), 8000);
   } catch (error) {
     console.error("Google Sheet error", error);
   }
