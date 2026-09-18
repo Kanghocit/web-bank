@@ -15,24 +15,32 @@ export function Header() {
     <header
       className={
         isHome
-          ? "absolute inset-x-0 top-0 z-40"
+          ? "absolute inset-x-0 top-0 z-40 bg-gradient-to-b from-black/40 to-transparent"
           : "sticky top-0 z-40 border-b border-emerald-100 bg-white/95 backdrop-blur"
       }
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <Logo variant={isHome ? "light" : "dark"} />
-        <nav className="hidden items-center gap-7 lg:flex" aria-label="Chính">
+        <nav className="hidden items-center gap-8 lg:flex" aria-label="Chính">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={`nav-link text-sm font-medium ${
+              className={`nav-link text-sm font-semibold ${
                 isHome ? "text-white" : "text-ink"
               } ${pathname === item.href ? "is-active" : ""}`}
             >
               {item.label}
             </Link>
           ))}
+          <Link
+            href="/#dang-ky"
+            className={`inline-flex h-10 items-center rounded-full px-5 text-sm font-bold shadow-sm transition hover:brightness-105 ${
+              isHome ? "bg-white text-brand" : "bg-brand text-white"
+            }`}
+          >
+            Đăng ký
+          </Link>
         </nav>
         <button
           type="button"
@@ -45,18 +53,14 @@ export function Header() {
         >
           <span className="sr-only">Mở menu</span>
           <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2">
-            {open ? (
-              <path d="M6 6l12 12M18 6L6 18" />
-            ) : (
-              <path d="M4 7h16M4 12h16M4 17h16" />
-            )}
+            {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
           </svg>
         </button>
       </div>
       {open ? (
         <div
           id="mobile-nav"
-          className="animate-slide-down border-t border-white/20 bg-white px-4 py-4 shadow-lg lg:hidden"
+          className="animate-slide-down border-t border-emerald-100 bg-white px-4 py-4 shadow-lg lg:hidden"
         >
           <nav className="flex flex-col gap-1" aria-label="Mobile">
             {navItems.map((item) => (
@@ -69,10 +73,14 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
-            <a
-              href={`tel:${site.phoneTel}`}
-              className="rounded-xl px-3 py-3 text-base font-semibold text-brand"
+            <Link
+              href="/#dang-ky"
+              className="mt-2 rounded-full bg-brand px-3 py-3 text-center text-base font-bold text-white"
+              onClick={() => setOpen(false)}
             >
+              Đăng ký
+            </Link>
+            <a className="rounded-xl px-3 py-3 text-base font-semibold text-brand" href={`tel:${site.phoneTel}`}>
               Gọi {site.phoneDisplay}
             </a>
           </nav>

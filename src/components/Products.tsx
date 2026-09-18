@@ -6,7 +6,7 @@ export function Products() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
       <Reveal>
-      <h2 className="text-center text-2xl font-extrabold uppercase tracking-wide text-brand sm:text-3xl">
+      <h2 className="text-center text-2xl font-bold text-brand sm:text-3xl">
         Hai nhu cầu được hỗ trợ
       </h2>
       <p className="mx-auto mt-3 max-w-2xl text-center text-muted">
@@ -18,7 +18,7 @@ export function Products() {
         {products.map((product, i) => (
           <Reveal key={product.href} delay={i * 120}>
           <article
-            className="card-lift flex h-full flex-col rounded-3xl border border-emerald-100 bg-white p-6 shadow-md"
+            className="card-lift flex h-full flex-col rounded-[24px] border border-emerald-100 bg-white p-6 shadow-md"
           >
             <h3 className="text-xl font-extrabold text-ink">{product.title}</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted">{product.desc}</p>
@@ -32,7 +32,7 @@ export function Products() {
             </ul>
             <Link
               href={product.href}
-              className="btn-pop mt-6 inline-flex h-11 items-center justify-center rounded-full bg-gradient-to-r from-[#0b4d66] to-brand px-5 text-sm font-bold text-white"
+              className="btn-pop mt-6 inline-flex h-11 items-center justify-center rounded-full bg-brand px-5 text-sm font-bold text-white hover:bg-brand-dark"
             >
               {product.cta}
             </Link>

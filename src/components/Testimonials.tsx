@@ -11,7 +11,7 @@ export function Testimonials() {
   return (
     <section className="mx-auto max-w-3xl px-4 py-14 text-center sm:px-6">
       <Reveal>
-      <h2 className="text-2xl font-extrabold uppercase tracking-wide text-brand sm:text-4xl">
+      <h2 className="text-2xl font-bold text-brand sm:text-3xl">
         Nhận xét của khách hàng
       </h2>
       </Reveal>
@@ -33,7 +33,7 @@ export function Testimonials() {
           ›
         </button>
         <div key={item.name} className="animate-fade-swap mx-auto max-w-xl">
-          <div className="mx-auto grid h-24 w-24 place-items-center rounded-full bg-gradient-to-br from-ocean to-mint text-3xl font-bold text-white">
+          <div className="mx-auto grid h-24 w-24 place-items-center rounded-full bg-brand text-3xl font-bold text-white">
             {item.initial}
           </div>
           <p className="mt-5 text-lg">

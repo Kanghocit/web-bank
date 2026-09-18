@@ -46,7 +46,7 @@ export function Benefits() {
   return (
     <section className="relative mx-auto max-w-6xl px-4 pb-8 pt-20 sm:px-6 sm:pt-24">
       <Reveal>
-      <h2 className="text-center text-2xl font-extrabold uppercase tracking-wide text-brand sm:text-4xl">
+      <h2 className="text-center text-2xl font-bold text-brand sm:text-3xl">
         Ưu điểm gói vay &amp; thẻ VPBank
       </h2>
       </Reveal>
@@ -70,8 +70,8 @@ export function Benefits() {
         </div>
         <div className="space-y-5">
           <Reveal delay={80}>
-          <div className="overflow-hidden rounded-[40px] bg-gradient-to-br from-ocean to-mint p-1 shadow-xl transition duration-500 hover:scale-[1.015]">
-            <div className="flex min-h-[240px] flex-col justify-end rounded-[36px] bg-gradient-to-t from-[#0b4d66]/80 to-transparent p-8 text-white">
+          <div className="overflow-hidden rounded-[28px] bg-brand p-1 shadow-xl transition duration-500 hover:scale-[1.015]">
+            <div className="flex min-h-[240px] flex-col justify-end rounded-[24px] bg-gradient-to-t from-[#004d2c]/85 to-transparent p-8 text-white">
               <p className="text-sm font-medium text-white/80">Hỗ trợ hồ sơ online</p>
               <p className="mt-2 text-2xl font-extrabold leading-snug">
                 Vay tín chấp hoặc mở thẻ — được chuyên viên đồng hành từng bước.

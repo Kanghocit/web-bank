@@ -21,7 +21,7 @@ export function FaqAccordion({
     <section id="faq" className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
       {showHeading ? (
         <Reveal>
-        <h2 className="text-center text-2xl font-extrabold uppercase tracking-wide text-brand sm:text-4xl">
+        <h2 className="text-center text-2xl font-bold text-brand sm:text-3xl">
           Các câu hỏi thường gặp
         </h2>
         </Reveal>

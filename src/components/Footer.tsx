@@ -1,10 +1,9 @@
 import Link from "next/link";
-import { Logo } from "@/components/Logo";
 import { navItems, site } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="relative mt-4 band-bg text-white">
+    <footer className="relative mt-8 band-bg text-white">
       <svg
         className="absolute -top-px left-0 h-16 w-full text-background"
         viewBox="0 0 1440 80"
@@ -17,10 +16,7 @@ export function Footer() {
         />
       </svg>
       <div className="relative mx-auto max-w-6xl px-4 pb-10 pt-16 sm:px-6">
-        <div className="flex justify-center pb-8">
-          <Logo variant="light" />
-        </div>
-        <div className="grid gap-6 border-t border-white/25 py-8 sm:grid-cols-2">
+        <div className="grid gap-6 py-8 sm:grid-cols-2">
           <div className="space-y-3 text-sm">
             <p className="flex items-start gap-3">
               <PinIcon />

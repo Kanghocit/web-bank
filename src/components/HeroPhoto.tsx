@@ -66,8 +66,8 @@ export function HeroPhoto() {
           />
         </div>
       </div>
-      <div className="absolute inset-0 bg-gradient-to-r from-[#042f40]/55 via-[#0b4d66]/25 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-black/20" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#005c2e]/70 via-[#00a651]/25 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#004d2c]/50 via-transparent to-black/15" />
     </div>
   );
 }

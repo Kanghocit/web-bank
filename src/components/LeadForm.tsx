@@ -88,7 +88,7 @@ export function LeadForm({
   return (
     <div
       id="dang-ky"
-      className="relative z-20 w-full scroll-mt-24 rounded-[28px] border border-white/70 bg-white p-5 shadow-2xl transition duration-500 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgb(11_77_102/0.2)] sm:p-7"
+      className="relative z-20 w-full scroll-mt-24 rounded-[24px] border border-white/80 bg-white p-5 shadow-[0_20px_50px_rgb(0,60,30,0.18)] sm:p-7"
     >
       <div className="pointer-events-none absolute -left-3 -top-8 hidden sm:block" aria-hidden>
         <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
@@ -99,7 +99,7 @@ export function LeadForm({
           />
         </svg>
       </div>
-      <h2 className="text-center text-xl font-extrabold tracking-wide text-brand-dark sm:text-2xl">
+      <h2 className="text-center text-xl font-extrabold tracking-tight text-brand sm:text-2xl">
         {compactTitle}
       </h2>
 
@@ -216,7 +216,7 @@ export function LeadForm({
         <button
           type="submit"
           disabled={status === "loading"}
-          className="mt-2 flex h-12 w-full items-center justify-center rounded-full bg-gradient-to-r from-[#0b4d66] to-brand text-base font-extrabold tracking-wide text-white shadow-lg btn-pop disabled:opacity-70"
+          className="mt-2 flex h-12 w-full items-center justify-center rounded-full bg-brand text-base font-extrabold tracking-wide text-white shadow-lg btn-pop hover:bg-brand-dark disabled:opacity-70"
         >
           {status === "loading" ? "Đang gửi..." : "ĐĂNG KÝ"}
         </button>

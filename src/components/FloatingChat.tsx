@@ -30,7 +30,7 @@ export function StickyCta() {
       <div className="mx-auto flex max-w-lg gap-2">
         <a
           href="#dang-ky"
-          className="btn-pop flex h-12 flex-1 items-center justify-center rounded-full bg-gradient-to-r from-[#0d4d6b] to-brand text-sm font-bold text-white"
+          className="btn-pop flex h-12 flex-1 items-center justify-center rounded-full bg-brand text-sm font-bold text-white"
         >
           Đăng ký
         </a>

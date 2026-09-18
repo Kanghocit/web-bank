@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7fbf9;
-  --foreground: #16323a;
+  --background: #f3f6f4;
+  --foreground: #1a2e24;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-brand: #00a651;
-  --color-brand-dark: #008a44;
-  --color-teal: #1ec9a7;
-  --color-ocean: #1a5f8a;
-  --color-lagoon: #178f96;
-  --color-mint: #22c5a8;
+  --color-brand-dark: #007a3d;
+  --color-teal: #00a651;
+  --color-ocean: #006b3d;
+  --color-lagoon: #008a44;
+  --color-mint: #2bbd6b;
   --color-gold: #f5c400;
-  --color-ink: #16323a;
-  --color-muted: #5b7178;
+  --color-ink: #1a2e24;
+  --color-muted: #5d6f66;
   --font-sans: var(--font-be-vietnam);
 }
 
@@ -43,13 +43,12 @@ button {
 
 .hero-bg {
   background-image:
-    radial-gradient(circle at 18% 22%, rgb(255 255 255 / 0.16), transparent 28%),
-    radial-gradient(circle at 82% 8%, rgb(255 255 255 / 0.18), transparent 24%),
-    linear-gradient(120deg, #1a5f8a 0%, #178f96 48%, #22c5a8 100%);
+    radial-gradient(circle at 18% 22%, rgb(255 255 255 / 0.14), transparent 28%),
+    linear-gradient(160deg, #006b3d 0%, #00a651 55%, #2bbd6b 100%);
 }
 
 .band-bg {
-  background-image: linear-gradient(90deg, #1a5f8a 0%, #178f96 48%, #22c5a8 100%);
+  background-image: linear-gradient(180deg, #006b3d 0%, #00a651 70%, #00964b 100%);
 }
 
 @keyframes fade-up {
