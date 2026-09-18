@@ -4,7 +4,7 @@ import { Reveal } from "@/components/Reveal";
 export function Steps() {
   return (
     <div className="relative z-10 mx-auto -mt-8 max-w-6xl px-4 sm:-mt-10 sm:px-6">
-      <p className="relative z-20 mb-1! pb-1 ml-3 inline-block rounded-full bg-gold px-5 py-2 text-sm font-extrabold text-ink shadow sm:ml-6 sm:px-6 sm:text-base">
+      <p className="relative z-20 mb-1 pt-1 ml-3 inline-block rounded-full bg-gold px-5 py-2 text-sm font-extrabold text-ink shadow sm:ml-6 sm:px-6 sm:text-base">
         Đăng ký chỉ với 4 bước
       </p>
       <div className="grid grid-cols-2 gap-3 pt-5 sm:gap-4 lg:grid-cols-4">
