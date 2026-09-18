@@ -36,7 +36,6 @@ export const metadata: Metadata = {
     "vay tiêu dùng VPBank",
   ],
   authors: [{ name: site.shortName }],
-  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "vi_VN",
@@ -53,11 +52,14 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    nocache: false,
     googleBot: {
       index: true,
       follow: true,
+      noimageindex: false,
       "max-image-preview": "large",
       "max-snippet": -1,
+      "max-video-preview": -1,
     },
   },
 };

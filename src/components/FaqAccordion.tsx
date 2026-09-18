@@ -65,7 +65,7 @@ export function FaqAccordion({
             href={showMoreHref}
             className="inline-flex h-12 items-center rounded-full border border-slate-300 px-8 text-sm font-semibold tracking-wide text-ink transition hover:-translate-y-0.5 hover:border-brand hover:text-brand"
           >
-            XEM THÊM
+            Xem thêm câu hỏi thường gặp
           </Link>
         </div>
       ) : null}
